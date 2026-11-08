@@ -1,0 +1,2 @@
+session_id,tool,model,started_at,ended_at,export_file,purpose,related_commits
+01a1b9d1-2a96-7ee2-9c90-f7bdb17867f2,Codex,see native turn_context,2026-11-08T14:20:55+08:00,in progress,ai/sessions/01a1b9d1-2a96-7ee2-9c90-f7bdb17867f2.jsonl,planning implementation verification and documentation,pending
