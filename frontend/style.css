@@ -1,0 +1,20 @@
+:root { font-family: system-ui, sans-serif; color: #172b3a; background: #f3f6f8; font-size: 15px; }
+* { box-sizing: border-box; }
+body { margin: 0; }
+main { max-width: 1240px; margin: 0 auto; padding: 32px 24px; }
+header, .section-heading { display: flex; justify-content: space-between; align-items: center; gap: 24px; }
+.eyebrow { color: #507080; font-size: 12px; letter-spacing: 2px; }
+h1 { font-size: 30px; margin: 6px 0 24px; } h2 { font-size: 21px; margin: 0 0 16px; } h3 { font-size: 16px; }
+section { background: white; border: 1px solid #dbe3e9; border-radius: 8px; padding: 24px; margin-top: 24px; }
+label { display: flex; flex-direction: column; gap: 6px; font-size: 13px; }
+input, select, button { font: inherit; padding: 9px 12px; border: 1px solid #bac8d2; border-radius: 5px; background: white; color: #172b3a; }
+button { cursor: pointer; background: #174b69; color: white; border-color: #174b69; }
+button:disabled { opacity: .5; cursor: default; }
+button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px solid #76b5dc; outline-offset: 2px; }
+.controls { display: flex; align-items: end; flex-wrap: wrap; gap: 14px; margin: 16px 0; }
+.table-wrap { overflow-x: auto; } table { width: 100%; border-collapse: collapse; } th, td { text-align: left; padding: 12px 8px; border-bottom: 1px solid #e4e9ed; } th { font-size: 12px; color: #536b7a; }
+.serial { font-family: monospace; font-size: 12px; overflow-wrap: anywhere; }
+.badge { display: inline-block; font-size: 11px; padding: 4px 7px; border-radius: 4px; color: #166247; background: #e6f4eb; } .revoked { color: #8d332b; background: #fcebe8; }
+.error { color: #a02525; } nav { display: flex; align-items: center; justify-content: end; gap: 16px; margin-top: 20px; }
+dl { display: grid; grid-template-columns: 160px 1fr; gap: 12px; } dt { color: #536b7a; } dd { margin: 0; overflow-wrap: anywhere; } li { margin: 7px 0; }
+@media (max-width: 650px) { header { align-items: start; flex-direction: column; } main { padding: 20px 12px; } section { padding: 16px; } nav { flex-wrap: wrap; justify-content: start; } dl { grid-template-columns: 1fr; } }

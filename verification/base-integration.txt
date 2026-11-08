@@ -1,0 +1,5 @@
+Prepared feature branch for PR into main; main itself is not modified.
+Main base: b00b4d6bc058082b05955bf89d3fa159a19c27b6
+Candidate-owned written-answers.md preserved byte-for-byte; contents not read/reviewed.
+Blob SHA: ad4cb4a471af5c62b3d3111555450d34ce10bf6e
+README conflict resolved using complete delivery documentation.

@@ -1,0 +1,52 @@
+2026-11-08T07:03:19.825Z
+PASS: browser issue, reload, detail; no page errors.
+TRAINING PLATFORM
+
+Certificate Admin
+Acting administrator
+East · alice@east.test
+West · bob@west.test
+Bulk issue
+
+Issue certificates to completed learners. Incomplete and previously certified learners are skipped.
+
+Course
+Safety 101
+First Aid
+Startup Check c497ba9c46ad
+Issue certificates
+Certificates
+Export CSV
+Search learner or serial
+Sort by
+Issue date (tenant local)
+Learner
+Course
+Serial number
+Status
+Direction
+Descending
+Ascending
+Search / refresh
+Learner	Course	Serial number	Issue date (tenant local)	Status	Details
+Alex Lee	Safety 101	CERT-CBBAEBAF57634D1490C56877289D1A6E	2026-11-08	ACTIVE	View
+Morgan Park	Safety 101	CERT-7570DC704D524C92A3A96DD891E6B693	2026-11-08	ACTIVE	View
+Startup Check c497ba9c46ad	Startup Check c497ba9c46ad	CERT-D7DCD206125A42609C1E322E047C77D1	2026-11-08	ACTIVE	View
+Taylor Smith	Safety 101	DEMO-EAST-001	2026-01-11	ACTIVE	View
+Previous
+Page 1 of 1 · 4 certificates
+Next
+Certificate detail
+Serial number
+CERT-CBBAEBAF57634D1490C56877289D1A6E
+Learner
+Alex Lee
+Course
+Safety 101
+Issued (tenant local)
+2026-11-08 17:39 · Australia/Sydney
+Status
+ACTIVE
+Revoke certificate
+Audit history
+ISSUED · alice@east.test · 2026-11-08T06:39:48.644515+00:00

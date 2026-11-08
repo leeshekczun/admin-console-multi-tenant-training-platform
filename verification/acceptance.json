@@ -1,0 +1,105 @@
+{
+  "started_at": "2026-11-08T06:53:41Z",
+  "database": "certificate_admin_test",
+  "base_url": "http://127.0.0.1:8011",
+  "elapsed_seconds": 21.18,
+  "results": [
+    {
+      "scenario": "A1",
+      "status": "PASS",
+      "evidence": {
+        "cross_tenant_detail_revoke_issue": 404,
+        "west_list_export_east_matches": 0,
+        "database_unchanged": true,
+        "missing_actor": 401
+      }
+    },
+    {
+      "scenario": "A2",
+      "status": "PASS",
+      "evidence": {
+        "concurrent_callers": 8,
+        "sequential_retries": 2,
+        "operation_id": 3,
+        "same_results": true,
+        "certificates": 3,
+        "one_issuance_audit_each": true
+      }
+    },
+    {
+      "scenario": "A3",
+      "status": "PASS",
+      "evidence": {
+        "different_course": 409,
+        "database_unchanged": true,
+        "original_result_preserved": true
+      }
+    },
+    {
+      "scenario": "A4",
+      "status": "PASS",
+      "evidence": {
+        "outcomes": [
+          {
+            "outcome": "issued",
+            "learner_id": 1794120821260530,
+            "learner_name": "Acceptance Learner 0",
+            "serial_number": "CERT-1BA3A508BF74460AB7953C892720549F",
+            "certificate_id": 200011
+          },
+          {
+            "reason": "incomplete",
+            "outcome": "skipped",
+            "learner_id": 1794120821260531,
+            "learner_name": "Acceptance Learner 1"
+          },
+          {
+            "reason": "already_certified",
+            "outcome": "skipped",
+            "learner_id": 1794120821260532,
+            "learner_name": "Acceptance Learner 2"
+          },
+          {
+            "outcome": "issued",
+            "learner_id": 1794120821260533,
+            "learner_name": "Acceptance Learner 3",
+            "serial_number": "CERT-F1151200895E4720845F7FD4E0EDAD36",
+            "certificate_id": 200012
+          }
+        ]
+      }
+    },
+    {
+      "scenario": "A5",
+      "status": "PASS",
+      "evidence": {
+        "east": "2026-01-11 00:30",
+        "west": "2026-01-10 21:30",
+        "csv_local_dates": true
+      }
+    },
+    {
+      "scenario": "A7",
+      "status": "PASS",
+      "evidence": {
+        "concurrent_revokes": 4,
+        "changes": 1,
+        "revocation_audits": 1,
+        "revoked_reissue": "skipped"
+      }
+    },
+    {
+      "scenario": "A6",
+      "status": "PASS",
+      "evidence": {
+        "matching_rows": 100000,
+        "first_export_seconds": 0.931,
+        "second_export_seconds": 0.734,
+        "list_during_export_seconds": 0.331,
+        "exact_sql_match": true,
+        "repeat_bytes_identical": true,
+        "seed_generator_repeatable": true
+      }
+    }
+  ]
+}

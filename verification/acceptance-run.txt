@@ -1,0 +1,9 @@
+PASS A1 {"cross_tenant_detail_revoke_issue": 404, "west_list_export_east_matches": 0, "database_unchanged": true, "missing_actor": 401}
+PASS A2 {"concurrent_callers": 8, "sequential_retries": 2, "operation_id": 1, "same_results": true, "certificates": 3, "one_issuance_audit_each": true}
+PASS A3 {"different_course": 409, "database_unchanged": true, "original_result_preserved": true}
+PASS A4 {"outcomes": [{"learner_id": 1794120334005753, "learner_name": "Acceptance Learner 0", "outcome": "issued", "certificate_id": 4, "serial_number": "CERT-FD82AF9E64CF499E9A175BEC94B5C00A"}, {"learner_id": 1794120334005754, "learner_name": "Acceptance Learner 1", "outcome": "skipped", "reason": "incomplete"}, {"learner_id": 1794120334005755, "learner_name": "Acceptance Learner 2", "outcome": "skipped", "reason": "already_certified"}, {"learner_id": 1794120334005756, "learner_name": "Acceptance Learner 3", "outcome": "issued", "certificate_id": 5, "serial_number": "CERT-248D540789624B9A8C6CDA8181B725DA"}]}
+PASS A5 {"east": "2026-01-11 00:30", "west": "2026-01-10 21:30", "csv_local_dates": true}
+PASS A7 {"concurrent_revokes": 4, "changes": 1, "revocation_audits": 1, "revoked_reissue": "skipped"}
+Growth dataset ready: 100000 East certificates, 10.459s, database=certificate_admin_test
+Growth dataset ready: 100000 East certificates, 8.564s, database=certificate_admin_test
+PASS A6 {"matching_rows": 100000, "first_export_seconds": 0.932, "second_export_seconds": 0.74, "list_during_export_seconds": 0.329, "exact_sql_match": true, "repeat_bytes_identical": true, "seed_generator_repeatable": true}

@@ -1,0 +1,98 @@
+{
+  "started_at": "2026-11-08T07:28:16Z",
+  "database": "certificate_admin_test",
+  "base_url": "http://127.0.0.1:18021",
+  "elapsed_seconds": 18.298,
+  "results": [
+    {
+      "scenario": "A1",
+      "status": "PASS",
+      "evidence": {
+        "cross_tenant_detail_revoke_issue": 404,
+        "west_list_export_east_matches": 0,
+        "database_unchanged": true,
+        "missing_actor": 401
+      }
+    },
+    {
+      "scenario": "A2",
+      "status": "PASS",
+      "evidence": {
+        "concurrent_callers": 8,
+        "sequential_retries": 2,
+        "operation_id": 14,
+        "same_results": true,
+        "certificates": 3,
+        "one_issuance_audit_each": true
+      }
+    },
+    {
+      "scenario": "A3",
+      "status": "PASS",
+      "evidence": {
+        "different_course": 409,
+        "nonexistent_replacement_course": 409,
+        "database_unchanged": true,
+        "original_result_preserved": true
+      }
+    },
+    {
+      "scenario": "A4",
+      "status": "PASS",
+      "evidence": {
+        "outcomes": [
+          {
+            "learner_id": 1794122896041696,
+            "learner_name": "Acceptance Learner 0",
+            "outcome": "issued",
+            "certificate_id": 400033,
+            "serial_number": "CERT-E94C5524250340AB8A74927C21F0B75E"
+          },
+          {
+            "learner_id": 1794122896041697,
+            "learner_name": "Acceptance Learner 1",
+            "outcome": "skipped",
+            "reason": "incomplete"
+          },
+          {
+            "learner_id": 1794122896041698,
+            "learner_name": "Acceptance Learner 2",
+            "outcome": "skipped",
+            "reason": "already_certified"
+          },
+          {
+            "learner_id": 1794122896041699,
+            "learner_name": "Acceptance Learner 3",
+            "outcome": "issued",
+            "certificate_id": 400034,
+            "serial_number": "CERT-84B48F83AFED407299B3CCD8537ADF89"
+          }
+        ]
+      }
+    },
+    {
+      "scenario": "A5",
+      "status": "PASS",
+      "evidence": {
+        "east": "2026-01-11 00:30",
+        "west": "2026-01-10 21:30",
+        "csv_local_dates": true
+      }
+    },
+    {
+      "scenario": "A7",
+      "status": "PASS",
+      "evidence": {
+        "concurrent_revokes": 4,
+        "changes": 1,
+        "revocation_audits": 1,
+        "revoked_reissue": "skipped"
+      }
+    },
+    {
+      "scenario": "suite",
+      "status": "FAIL",
+      "error": "AssertionError()"
+    }
+  ]
+}

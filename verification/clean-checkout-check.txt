@@ -1,0 +1,1 @@
+{"status": "PASS", "elapsed_seconds": 0.08, "base_url": "http://127.0.0.1:18020", "isolated_fixture": "Startup Check 787c99189d16", "certificate_id": 3}

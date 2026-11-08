@@ -1,0 +1,8 @@
+2026-11-08T06:47:05.402Z
+PASS: West browser issuance actually issued Alex Lee; per-learner outcomes shown.
+PASS: West certificate persisted across browser reload.
+PASS: revoke confirmation, cancel, confirm, status and audit refresh.
+PASS: empty state.
+PASS: loading state.
+PASS: API error state and successful retry.
+PASS: browser CSV download honors search and tenant-local date.
