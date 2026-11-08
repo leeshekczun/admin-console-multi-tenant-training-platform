@@ -20,3 +20,10 @@ Verification evidence and related commits will be appended as exercised. No AI e
 - Startup database identity is checked before creating isolated records. A check against occupied
   port 8012 correctly rejected a database mismatch; a dedicated candidate on 18013 passed.
   Evidence: verification/startup-candidate.txt. Related milestone commit: see next git commit after 332c315.
+
+- User found an A3 gap after ff3b76f: reusing a key with missing course 999999 returned 404.
+  Reproduced against MySQL, then moved existing-operation fingerprint comparison before course lookup.
+  Regression checks existing and missing replacement courses (409), unchanged database counts,
+  preserved original result, and unused keys with missing/foreign courses (404).
+  Evidence: verification/key-misuse-before.txt and verification/key-misuse-after.txt.
+  This corrects the earlier incomplete A3 test coverage; the original suite only changed to an existing course.

@@ -77,6 +77,10 @@ audit of the previous dependency versions, retained as evidence of the correctio
 Remaining delivery work: full A1-A7 reproduction instructions, clean-checkout one-command startup
 verification, final AI export/index and decision-log reconciliation, and `COMPLETENESS.md`.
 The current native AI export is a point-in-time snapshot, not a claim of final completeness.
+User-reported A3 correction: an already-used key with a different `course_id` now returns 409
+even when the replacement course does not exist. Existing-key fingerprint comparison precedes
+course lookup. Regression evidence is in `verification/key-misuse-before.txt` and
+`verification/key-misuse-after.txt`; the original result and database counts remain unchanged.
 Section 6 answers must be supplied independently by the candidate; `written-answers.md` is not supplied.
 Original assignment: `docs/assessment.pdf`. Native AI evidence: `ai/sessions/`, indexes in `ai/` and `docs/`.
 No cloud deployment, production authentication, notifications or unrelated features are included.

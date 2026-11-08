@@ -94,9 +94,11 @@ def main():
     counts_before=sql('SELECT (SELECT COUNT(*) FROM certificates) certs,(SELECT COUNT(*) FROM audit_events) audits,(SELECT COUNT(*) FROM operations) ops')
     response=request('POST','/api/bulk-issue',headers,json={'course_id':101})
     assert response.status_code==409,response.text
+    response=request('POST','/api/bulk-issue',headers,json={'course_id':999999})
+    assert response.status_code==409,response.text
     assert counts_before==sql('SELECT (SELECT COUNT(*) FROM certificates) certs,(SELECT COUNT(*) FROM audit_events) audits,(SELECT COUNT(*) FROM operations) ops')
     assert issue()==expected
-    record('A3',{'different_course':409,'database_unchanged':True,'original_result_preserved':True})
+    record('A3',{'different_course':409,'nonexistent_replacement_course':409,'database_unchanged':True,'original_result_preserved':True})
 
     per_learner={x['learner_id']-fixture:x for x in expected['outcomes']}
     assert per_learner[0]['outcome']=='issued' and per_learner[3]['outcome']=='issued'

@@ -149,9 +149,6 @@ def bulk_issue(payload: IssueRequest, idempotency_key: str = Header(min_length=1
             # It works across processes, keeps retries waiting for the committed result,
             # and also protects different-key requests from duplicate issuance races.
             c.execute('SELECT id FROM tenants WHERE id=%s FOR UPDATE',(a['tenant_id'],))
-            c.execute('SELECT id FROM courses WHERE id=%s AND tenant_id=%s',(payload.course_id,a['tenant_id']))
-            if not c.fetchone():
-                raise HTTPException(404,'Course not found.')
             c.execute('''SELECT * FROM operations WHERE tenant_id=%s AND actor_id=%s AND idempotency_key=%s''',
                       (a['tenant_id'],a['id'],idempotency_key))
             previous=c.fetchone()
@@ -159,6 +156,9 @@ def bulk_issue(payload: IssueRequest, idempotency_key: str = Header(min_length=1
                 if previous['fingerprint'] != fingerprint:
                     raise HTTPException(409,'Idempotency key was used for a different request.')
                 return json.loads(previous['result'])
+            c.execute('SELECT id FROM courses WHERE id=%s AND tenant_id=%s',(payload.course_id,a['tenant_id']))
+            if not c.fetchone():
+                raise HTTPException(404,'Course not found.')
             c.execute('''INSERT INTO operations (tenant_id,actor_id,idempotency_key,fingerprint,status)
                 VALUES (%s,%s,%s,%s,'RUNNING')''',(a['tenant_id'],a['id'],idempotency_key,fingerprint))
             operation_id=c.lastrowid
