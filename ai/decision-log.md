@@ -27,3 +27,9 @@ Verification evidence and related commits will be appended as exercised. No AI e
   preserved original result, and unused keys with missing/foreign courses (404).
   Evidence: verification/key-misuse-before.txt and verification/key-misuse-after.txt.
   This corrects the earlier incomplete A3 test coverage; the original suite only changed to an existing course.
+
+- User requested comprehensive flow unit tests and precise fault/timing evidence. Added 17 database-free
+  API unit tests plus 5 real-MySQL integration tests with controlled cursor/commit wrappers, avoiding
+  production fault switches or database emulation as proof of rollback. All 22 passed with no skips.
+  Base implementation: d4fe894. Evidence: verification/all-tests.txt and docs/test-coverage.md.
+  Vue verification remains browser-based; no claim of Vue component unit coverage is made.

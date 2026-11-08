@@ -53,6 +53,34 @@ not only the visible page; server-side cursors stream bounded batches on an inde
 
 ## Verification and completeness
 
+### Automated unit and controlled transaction tests
+
+Database-free API unit tests (17 tests, including parameterized subcases):
+
+```sh
+.venv/bin/python -m unittest discover -s tests -p 'test_api_units.py' -v
+```
+
+All tests, including five controlled real-MySQL transaction tests (22 tests total):
+
+```sh
+MYSQL_DATABASE=certificate_admin_test .venv/bin/python -m backend.seed
+MYSQL_DATABASE=certificate_admin_test .venv/bin/python -m unittest discover -s tests -v
+```
+
+The first command only initializes the already-created isolated database; never point these tests
+at the application database. No running HTTP server is needed: tests use FastAPI TestClient.
+Unit tests mock database connections. Transaction tests wrap real connections/cursors to inject
+precise audit failures or pause immediately before commit; MySQL itself performs locks, savepoints
+and rollback. They create uniquely named fixtures and retain them for inspection, without deleting
+other data. Without the explicit test database setting, the five integration tests are skipped.
+
+Actual result: 22 tests passed, zero skipped, 0.261 seconds, local MySQL 9.3.0.
+Evidence: `verification/unit-tests.txt`, `verification/all-tests.txt`, `docs/test-coverage.md`.
+The audit integrity traceback in the test output is the deliberately injected fault, followed by `ok`.
+These are API unit and transaction integration tests; existing Vue behavior is covered by the
+separately recorded browser scenarios, not by a Vue component unit suite.
+
 Run the bounded startup check against the running application:
 
 ```sh

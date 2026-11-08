@@ -1,8 +1,8 @@
 # AI export index
 
 Native Codex session: `01a1b9d1-2a96-7ee2-9c90-f7bdb17867f2`. Model identifiers as recorded: `gpt-6.1-sol`.
-Time range: `2026-11-08T06:20:55.735Z` through `2026-11-08T07:09:29.432Z` (UTC, original timestamps).
-Export file: [`ai/sessions/01a1b9d1-2a96-7ee2-9c90-f7bdb17867f2.jsonl`](../ai/sessions/01a1b9d1-2a96-7ee2-9c90-f7bdb17867f2.jsonl). Records: 533.
+Time range: `2026-11-08T06:20:55.735Z` through `2026-11-08T07:14:28.308Z` (UTC, original timestamps).
+Export file: [`ai/sessions/01a1b9d1-2a96-7ee2-9c90-f7bdb17867f2.jsonl`](../ai/sessions/01a1b9d1-2a96-7ee2-9c90-f7bdb17867f2.jsonl). Records: 587.
 Session CSV: [`ai/session-index.csv`](../ai/session-index.csv).
 Decisions: [`ai/decision-log.md`](../ai/decision-log.md).
 
@@ -16,7 +16,7 @@ is encrypted by the tool; it is not decrypted or recreated. No inline autocomple
 second AI session was used. Browser automation used CUA (timeout) and Playwright (success);
 their calls and outputs are present in this session's log.
 
-Exported at 2026-11-08T07:09:29.470053+00:00.
+Exported at 2026-11-08T07:14:28.379692+00:00.
 The snapshot cannot contain its own completed tool output or subsequent final commit/push
 and handoff. Those actions are outside this cutoff and are disclosed here; git history
 provides their timestamps. Refresh this script before the final documentation commit.
