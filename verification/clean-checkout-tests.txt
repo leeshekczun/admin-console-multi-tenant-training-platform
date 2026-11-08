@@ -1,0 +1,40 @@
+test_all_sort_fields_are_allowlisted_and_stable (test_api_units.ApiUnits.test_all_sort_fields_are_allowlisted_and_stable) ... ok
+test_bulk_mixed_outcomes_commit_and_audit (test_api_units.ApiUnits.test_bulk_mixed_outcomes_commit_and_audit) ... ok
+test_courses_are_tenant_scoped (test_api_units.ApiUnits.test_courses_are_tenant_scoped) ... ok
+test_database_failure_is_not_success (test_api_units.ApiUnits.test_database_failure_is_not_success) ... ok
+test_detail_and_audit (test_api_units.ApiUnits.test_detail_and_audit) ... ok
+test_empty_list (test_api_units.ApiUnits.test_empty_list) ... ok
+test_export_uses_search_sort_local_date_and_csv_escaping (test_api_units.ApiUnits.test_export_uses_search_sort_local_date_and_csv_escaping) ... ok
+test_forced_cross_tenant_detail_revoke_and_issue (test_api_units.ApiUnits.test_forced_cross_tenant_detail_revoke_and_issue) ... ok
+test_health_and_actor_choices (test_api_units.ApiUnits.test_health_and_actor_choices) ... ok
+test_illegal_issue_payloads_and_keys (test_api_units.ApiUnits.test_illegal_issue_payloads_and_keys) ... ok
+test_illegal_query_parameters (test_api_units.ApiUnits.test_illegal_query_parameters) ... ok
+test_list_search_pagination_sort_and_dst (test_api_units.ApiUnits.test_list_search_pagination_sort_and_dst) ... ok
+test_missing_and_unknown_identity (test_api_units.ApiUnits.test_missing_and_unknown_identity) ... ok
+test_revocation_first_and_repeat (test_api_units.ApiUnits.test_revocation_first_and_repeat) ... ok
+test_same_key_changed_missing_course_conflicts_before_lookup (test_api_units.ApiUnits.test_same_key_changed_missing_course_conflicts_before_lookup) ... ok
+test_same_key_replays_saved_result_without_writes (test_api_units.ApiUnits.test_same_key_replays_saved_result_without_writes) ... ok
+test_west_dst (test_api_units.ApiUnits.test_west_dst) ... ok
+test_audit_integrity_failure_rolls_back_just_failed_learner (test_transactions_mysql.Transactions.test_audit_integrity_failure_rolls_back_just_failed_learner) ... Issuance integrity failure for enrollment 1794122897323145
+Traceback (most recent call last):
+  File "/private/tmp/certificate-admin-clean-20261108-1526/backend/main.py", line 188, in bulk_issue
+    c.execute('''INSERT INTO audit_events (tenant_id,certificate_id,actor_id,action,occurred_at)
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        VALUES (%s,%s,%s,'ISSUED',%s)''',(a['tenant_id'],cert_id,a['id'],now.replace(tzinfo=None)))
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/certificate-admin-clean-20261108-1526/tests/test_transactions_mysql.py", line 141, in execute
+    self.hook(self.cursor,query,params) if not query.endswith('FOR UPDATE') else self.hook(self,query,params)
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/certificate-admin-clean-20261108-1526/tests/test_transactions_mysql.py", line 47, in hook
+    raise pymysql.IntegrityError(1062,'injected audit failure after certificate insert')
+pymysql.err.IntegrityError: (1062, 'injected audit failure after certificate insert')
+ok
+test_forced_foreign_ids_leave_real_database_unchanged (test_transactions_mysql.Transactions.test_forced_foreign_ids_leave_real_database_unchanged) ... ok
+test_revocation_audit_failure_rolls_back_status (test_transactions_mysql.Transactions.test_revocation_audit_failure_rolls_back_status) ... ok
+test_second_audit_failure_rolls_back_entire_transaction (test_transactions_mysql.Transactions.test_second_audit_failure_rolls_back_entire_transaction) ... ok
+test_uncommitted_issuance_invisible_and_retry_waits_for_commit (test_transactions_mysql.Transactions.test_uncommitted_issuance_invisible_and_retry_waits_for_commit) ... ok
+
+----------------------------------------------------------------------
+Ran 22 tests in 17.234s
+
+OK

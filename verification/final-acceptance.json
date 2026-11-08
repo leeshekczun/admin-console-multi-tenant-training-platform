@@ -1,0 +1,106 @@
+{
+  "started_at": "2026-11-08T07:29:56Z",
+  "database": "certificate_admin_test",
+  "base_url": "http://127.0.0.1:18021",
+  "elapsed_seconds": 21.061,
+  "results": [
+    {
+      "scenario": "A1",
+      "status": "PASS",
+      "evidence": {
+        "cross_tenant_detail_revoke_issue": 404,
+        "west_list_export_east_matches": 0,
+        "database_unchanged": true,
+        "missing_actor": 401
+      }
+    },
+    {
+      "scenario": "A2",
+      "status": "PASS",
+      "evidence": {
+        "concurrent_callers": 8,
+        "sequential_retries": 2,
+        "operation_id": 22,
+        "same_results": true,
+        "certificates": 3,
+        "one_issuance_audit_each": true
+      }
+    },
+    {
+      "scenario": "A3",
+      "status": "PASS",
+      "evidence": {
+        "different_course": 409,
+        "nonexistent_replacement_course": 409,
+        "database_unchanged": true,
+        "original_result_preserved": true
+      }
+    },
+    {
+      "scenario": "A4",
+      "status": "PASS",
+      "evidence": {
+        "outcomes": [
+          {
+            "outcome": "issued",
+            "learner_id": 1794122996555798,
+            "learner_name": "Acceptance Learner 0",
+            "serial_number": "CERT-DBC72047A9474D8E8134A847CC636042",
+            "certificate_id": 600052
+          },
+          {
+            "reason": "incomplete",
+            "outcome": "skipped",
+            "learner_id": 1794122996555799,
+            "learner_name": "Acceptance Learner 1"
+          },
+          {
+            "reason": "already_certified",
+            "outcome": "skipped",
+            "learner_id": 1794122996555800,
+            "learner_name": "Acceptance Learner 2"
+          },
+          {
+            "outcome": "issued",
+            "learner_id": 1794122996555801,
+            "learner_name": "Acceptance Learner 3",
+            "serial_number": "CERT-CBA9E89864C24F84ADD7B6D02C239797",
+            "certificate_id": 600053
+          }
+        ]
+      }
+    },
+    {
+      "scenario": "A5",
+      "status": "PASS",
+      "evidence": {
+        "east": "2026-01-11 00:30",
+        "west": "2026-01-10 21:30",
+        "csv_local_dates": true
+      }
+    },
+    {
+      "scenario": "A7",
+      "status": "PASS",
+      "evidence": {
+        "concurrent_revokes": 4,
+        "changes": 1,
+        "revocation_audits": 1,
+        "revoked_reissue": "skipped"
+      }
+    },
+    {
+      "scenario": "A6",
+      "status": "PASS",
+      "evidence": {
+        "matching_rows": 100000,
+        "first_export_seconds": 1.194,
+        "second_export_seconds": 0.768,
+        "list_during_export_seconds": 0.558,
+        "exact_sql_match": true,
+        "repeat_bytes_identical": true,
+        "seed_generator_repeatable": true
+      }
+    }
+  ]
+}

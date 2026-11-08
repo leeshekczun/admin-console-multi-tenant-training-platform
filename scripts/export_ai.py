@@ -1,4 +1,4 @@
-"""Copy the native, complete chronological session log, never a curated summary."""
+"""Export original Codex project logs and maintain a multi-session index."""
 import argparse
 import csv
 import json
@@ -6,49 +6,65 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 parser=argparse.ArgumentParser()
-parser.add_argument('source',type=Path,help='Original Codex rollout JSONL for this session')
-parser.add_argument('--commits',default='See git history and ai/decision-log.md')
+parser.add_argument('source',type=Path,nargs='+',help='Original project Codex rollout JSONL files')
+parser.add_argument('--commits',required=True,help='Verified related commits, separated by semicolons')
+parser.add_argument('--purpose',default='Planning; implementation; verification; documentation')
 args=parser.parse_args()
-raw=args.source.read_bytes()
-# An active writer may have an incomplete final line; copy only complete native records.
-raw=raw[:raw.rfind(b'\n')+1]
-records=[json.loads(line) for line in raw.splitlines()]
-meta=next(x['payload'] for x in records if x['type']=='session_meta')
-session_id=meta['id']
-models=sorted({x['payload'].get('model','') for x in records if x['type']=='turn_context'}-{''})
-start=records[0]['timestamp']
-end=records[-1]['timestamp']
-target=Path('ai/sessions')/(session_id+'.jsonl')
-target.parent.mkdir(parents=True,exist_ok=True)
-target.write_bytes(raw)
-with Path('ai/session-index.csv').open('w',newline='') as stream:
-    writer=csv.writer(stream,lineterminator='\n')
-    writer.writerow(['session_id','tool','model','started_at','ended_at','export_file','purpose','related_commits'])
-    writer.writerow([session_id,'Codex',';'.join(models),start,end,str(target),'Planning; implementation; verification; documentation',args.commits])
-Path('docs/ai-export-index.md').write_text(f'''# AI export index
-
-Native Codex session: `{session_id}`. Model identifiers as recorded: `{';'.join(models)}`.
-Time range: `{start}` through `{end}` (UTC, original timestamps).
-Export file: [`{target}`](../{target}). Records: {len(records)}.
-Session CSV: [`ai/session-index.csv`](../ai/session-index.csv).
-Decisions: [`ai/decision-log.md`](../ai/decision-log.md).
-
-This is a byte-for-byte snapshot of all complete native JSONL records at the cutoff,
-including user messages, full assistant messages, original tool calls, commands, edits,
-outputs, errors, configuration and timestamps as recorded by the tool. No curated prompt
-list or screenshot is substituted. Original source text and native user messages retain
-their original language; authored code, UI and documentation are English.
-The source was parsed and the copied bytes verified identical. Native private reasoning
-is encrypted by the tool; it is not decrypted or recreated. No inline autocomplete or
-second AI session was used. Browser automation used CUA (timeout) and Playwright (success);
-their calls and outputs are present in this session's log.
-
-Exported at {datetime.now(timezone.utc).isoformat()}.
-The snapshot cannot contain its own completed tool output or subsequent final commit/push
-and handoff. Those actions are outside this cutoff and are disclosed here; git history
-provides their timestamps. Refresh this script before the final documentation commit.
-No real credentials or private third-party data were intentionally used; demo identities
-and local filesystem paths are retained as evidence. This file does not certify Section 6.
-''')
-assert target.read_bytes()==raw
-print(f'Export verified: {len(records)} native records, {start} -> {end}, {target}')
+index=Path('ai/session-index.csv')
+existing={}
+if index.exists():
+    with index.open(newline='') as stream:
+        existing={row['session_id']:row for row in csv.DictReader(stream)}
+for source in args.source:
+    raw=source.read_bytes()
+    raw=raw[:raw.rfind(b'\n')+1]
+    records=[json.loads(line) for line in raw.splitlines()]
+    meta=next(x['payload'] for x in records if x['type']=='session_meta')
+    if Path(meta['cwd']).resolve()!=Path.cwd().resolve():
+        raise ValueError('Refusing to export a session from a different project')
+    session_id=meta['id']
+    models=sorted({x['payload'].get('model','') for x in records if x['type']=='turn_context'}-{''})
+    target=Path('ai/sessions')/(session_id+'.jsonl')
+    target.parent.mkdir(parents=True,exist_ok=True)
+    target.write_bytes(raw)
+    assert target.read_bytes()==raw
+    existing[session_id]={'session_id':session_id,'tool':'Codex','model':';'.join(models),
+        'started_at':records[0]['timestamp'],'ended_at':records[-1]['timestamp'],
+        'export_file':str(target),'purpose':args.purpose,'related_commits':args.commits}
+    print(f'Export verified: {len(records)} native records, {target}, cutoff {records[-1]["timestamp"]}')
+fields=['session_id','tool','model','started_at','ended_at','export_file','purpose','related_commits']
+rows=sorted(existing.values(),key=lambda x:x['started_at'])
+with index.open('w',newline='') as stream:
+    writer=csv.DictWriter(stream,fieldnames=fields,lineterminator='\n')
+    writer.writeheader();writer.writerows(rows)
+lines=['# AI export index','','All times below are UTC, preserving original native timestamps.','',
+    '| Session | Tool / model | Time range | Native export | Purpose | Related commits |',
+    '| --- | --- | --- | --- | --- | --- |']
+for row in rows:
+    export=Path(row['export_file'])
+    records=[json.loads(line) for line in export.read_bytes().splitlines()]
+    lines.append(f'| {row["session_id"]} | {row["tool"]} / {row["model"]} | {row["started_at"]} to {row["ended_at"]} | [{export.name}](../{export}) ({len(records)} records) | {row["purpose"]} | {row["related_commits"]} |')
+lines.extend(['','Machine-readable index: [`ai/session-index.csv`](../ai/session-index.csv).',
+    'Decisions and evidence: [`ai/decision-log.md`](../ai/decision-log.md).','',
+    '## Export boundary and limitations','',
+    'Each JSONL is a byte-for-byte snapshot of every complete native record at its cutoff. It includes',
+    'user prompts, full assistant messages, tool calls, commands, edits, outputs, failures, configuration',
+    'and timestamps/model identifiers as recorded by Codex. No curated transcript replaces native evidence.',
+    'Private reasoning remains in its native encrypted representation; no decryption or reconstruction is performed.',
+    'Only a partially written final line, if present, is excluded until the next refresh.',
+    'Original user messages and source attachments retain their original language; authored code, UI and docs are English.','',
+    'Tool use includes Codex shell/app tooling, CUA browser automation and Playwright/Chrome.',
+    'The original tool calls/results, including failed attempts, are inside the native session logs.',
+    'No separate inline autocomplete was used by this implementation agent. The independent reviewer',
+    'session and the branch-confirmation session are separately indexed, rather than attributed to the main session.',
+    'A scan of the local session metadata identified these project-bound sessions; other tools or sessions',
+    'not recorded on this computer cannot be certified by this agent. The candidate must disclose any such use.','',
+    'No real credentials or private third-party data were intentionally used. Demo identities, empty-password',
+    'local test configuration and local paths remain as evidence. No broad redaction or interaction rewriting was applied.','',
+    f'Index refreshed at {datetime.now(timezone.utc).isoformat()}.',
+    'The active export cannot include its own completed output or the final commit/push and handoff.',
+    'No code changes follow the final refresh; subsequent actions are packaging and handoff only.',
+    'Their timestamps are available in git history. A reviewer requiring a final post-handoff native log',
+    'can copy the original log afterward as a separate evidence attachment, without rewriting this cutoff.',
+    'Section 6 independent written answers are outside AI assistance and are not certified here.',''])
+Path('docs/ai-export-index.md').write_text('\n'.join(lines))

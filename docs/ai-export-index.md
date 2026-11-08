@@ -1,24 +1,38 @@
 # AI export index
 
-Native Codex session: `01a1b9d1-2a96-7ee2-9c90-f7bdb17867f2`. Model identifiers as recorded: `gpt-6.1-sol`.
-Time range: `2026-11-08T06:20:55.735Z` through `2026-11-08T07:14:28.308Z` (UTC, original timestamps).
-Export file: [`ai/sessions/01a1b9d1-2a96-7ee2-9c90-f7bdb17867f2.jsonl`](../ai/sessions/01a1b9d1-2a96-7ee2-9c90-f7bdb17867f2.jsonl). Records: 587.
-Session CSV: [`ai/session-index.csv`](../ai/session-index.csv).
-Decisions: [`ai/decision-log.md`](../ai/decision-log.md).
+All times below are UTC, preserving original native timestamps.
 
-This is a byte-for-byte snapshot of all complete native JSONL records at the cutoff,
-including user messages, full assistant messages, original tool calls, commands, edits,
-outputs, errors, configuration and timestamps as recorded by the tool. No curated prompt
-list or screenshot is substituted. Original source text and native user messages retain
-their original language; authored code, UI and documentation are English.
-The source was parsed and the copied bytes verified identical. Native private reasoning
-is encrypted by the tool; it is not decrypted or recreated. No inline autocomplete or
-second AI session was used. Browser automation used CUA (timeout) and Playwright (success);
-their calls and outputs are present in this session's log.
+| Session | Tool / model | Time range | Native export | Purpose | Related commits |
+| --- | --- | --- | --- | --- | --- |
+| 01a1b9d1-2a96-7ee2-9c90-f7bdb17867f2 | Codex / gpt-6.1-sol | 2026-11-08T06:20:55.735Z to 2026-11-08T07:36:33.140Z | [01a1b9d1-2a96-7ee2-9c90-f7bdb17867f2.jsonl](../ai/sessions/01a1b9d1-2a96-7ee2-9c90-f7bdb17867f2.jsonl) (805 records) | Planning; implementation; verification; supplemental documentation and evidence | a19603b;332c315;ff3b76f;d4fe894;0e656c0 |
+| 01a1b9d7-cf72-7f81-bc51-7e12765987c5 | Codex / gpt-6.1-sol | 2026-11-08T06:28:21.131Z to 2026-11-08T06:30:17.896Z | [01a1b9d7-cf72-7f81-bc51-7e12765987c5.jsonl](../ai/sessions/01a1b9d7-cf72-7f81-bc51-7e12765987c5.jsonl) (35 records) | Pre-development branch confirmation | a19603b |
+| 01a1b9e6-95da-7513-a366-ad005f516447 | Codex / gpt-6.1-sol | 2026-11-08T06:45:07.400Z to 2026-11-08T07:08:20.369Z | [01a1b9e6-95da-7513-a366-ad005f516447.jsonl](../ai/sessions/01a1b9e6-95da-7513-a366-ad005f516447.jsonl) (307 records) | Independent acceptance review; A3 defect discovery | 332c315;ff3b76f;d4fe894 |
 
-Exported at 2026-11-08T07:14:28.379692+00:00.
-The snapshot cannot contain its own completed tool output or subsequent final commit/push
-and handoff. Those actions are outside this cutoff and are disclosed here; git history
-provides their timestamps. Refresh this script before the final documentation commit.
-No real credentials or private third-party data were intentionally used; demo identities
-and local filesystem paths are retained as evidence. This file does not certify Section 6.
+Machine-readable index: [`ai/session-index.csv`](../ai/session-index.csv).
+Decisions and evidence: [`ai/decision-log.md`](../ai/decision-log.md).
+
+## Export boundary and limitations
+
+Each JSONL is a byte-for-byte snapshot of every complete native record at its cutoff. It includes
+user prompts, full assistant messages, tool calls, commands, edits, outputs, failures, configuration
+and timestamps/model identifiers as recorded by Codex. No curated transcript replaces native evidence.
+Private reasoning remains in its native encrypted representation; no decryption or reconstruction is performed.
+Only a partially written final line, if present, is excluded until the next refresh.
+Original user messages and source attachments retain their original language; authored code, UI and docs are English.
+
+Tool use includes Codex shell/app tooling, CUA browser automation and Playwright/Chrome.
+The original tool calls/results, including failed attempts, are inside the native session logs.
+No separate inline autocomplete was used by this implementation agent. The independent reviewer
+session and the branch-confirmation session are separately indexed, rather than attributed to the main session.
+A scan of the local session metadata identified these project-bound sessions; other tools or sessions
+not recorded on this computer cannot be certified by this agent. The candidate must disclose any such use.
+
+No real credentials or private third-party data were intentionally used. Demo identities, empty-password
+local test configuration and local paths remain as evidence. No broad redaction or interaction rewriting was applied.
+
+Index refreshed at 2026-11-08T07:36:33.253255+00:00.
+The active export cannot include its own completed output or the final commit/push and handoff.
+No code changes follow the final refresh; subsequent actions are packaging and handoff only.
+Their timestamps are available in git history. A reviewer requiring a final post-handoff native log
+can copy the original log afterward as a separate evidence attachment, without rewriting this cutoff.
+Section 6 independent written answers are outside AI assistance and are not certified here.

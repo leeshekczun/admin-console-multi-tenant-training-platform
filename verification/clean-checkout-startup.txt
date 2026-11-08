@@ -1,0 +1,104 @@
+Collecting fastapi==0.115.12 (from -r requirements.txt (line 1))
+  Using cached fastapi-0.115.12-py3-none-any.whl.metadata (27 kB)
+Collecting uvicorn==0.34.2 (from -r requirements.txt (line 2))
+  Using cached uvicorn-0.34.2-py3-none-any.whl.metadata (6.5 kB)
+Collecting PyMySQL==1.1.1 (from -r requirements.txt (line 3))
+  Using cached PyMySQL-1.1.1-py3-none-any.whl.metadata (4.4 kB)
+Collecting httpx==0.28.1 (from -r requirements.txt (line 4))
+  Using cached httpx-0.28.1-py3-none-any.whl.metadata (7.1 kB)
+Collecting starlette<0.47.0,>=0.40.0 (from fastapi==0.115.12->-r requirements.txt (line 1))
+  Using cached starlette-0.46.2-py3-none-any.whl.metadata (6.2 kB)
+Collecting pydantic!=1.8,!=1.8.1,!=2.0.0,!=2.0.1,!=2.1.0,<3.0.0,>=1.7.4 (from fastapi==0.115.12->-r requirements.txt (line 1))
+  Using cached pydantic-2.14.3-py3-none-any.whl.metadata (141 kB)
+Collecting typing-extensions>=4.8.0 (from fastapi==0.115.12->-r requirements.txt (line 1))
+  Using cached typing_extensions-4.16.0-py3-none-any.whl.metadata (3.3 kB)
+Collecting click>=7.0 (from uvicorn==0.34.2->-r requirements.txt (line 2))
+  Using cached click-8.5.1-py3-none-any.whl.metadata (2.6 kB)
+Collecting h11>=0.8 (from uvicorn==0.34.2->-r requirements.txt (line 2))
+  Using cached h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+Collecting anyio (from httpx==0.28.1->-r requirements.txt (line 4))
+  Using cached anyio-4.16.0-py3-none-any.whl.metadata (4.7 kB)
+Collecting certifi (from httpx==0.28.1->-r requirements.txt (line 4))
+  Using cached certifi-2026.10.23-py3-none-any.whl.metadata (2.5 kB)
+Collecting httpcore==1.* (from httpx==0.28.1->-r requirements.txt (line 4))
+  Using cached httpcore-1.0.9-py3-none-any.whl.metadata (21 kB)
+Collecting idna (from httpx==0.28.1->-r requirements.txt (line 4))
+  Using cached idna-3.20-py3-none-any.whl.metadata (7.2 kB)
+Collecting annotated-types>=0.6.0 (from pydantic!=1.8,!=1.8.1,!=2.0.0,!=2.0.1,!=2.1.0,<3.0.0,>=1.7.4->fastapi==0.115.12->-r requirements.txt (line 1))
+  Using cached annotated_types-0.8.0-py3-none-any.whl.metadata (15 kB)
+Collecting pydantic-core==2.50.4 (from pydantic!=1.8,!=1.8.1,!=2.0.0,!=2.0.1,!=2.1.0,<3.0.0,>=1.7.4->fastapi==0.115.12->-r requirements.txt (line 1))
+  Using cached pydantic_core-2.50.4-cp315-cp315-macosx_11_0_arm64.whl.metadata (6.6 kB)
+Collecting typing-inspection>=0.4.4 (from pydantic!=1.8,!=1.8.1,!=2.0.0,!=2.0.1,!=2.1.0,<3.0.0,>=1.7.4->fastapi==0.115.12->-r requirements.txt (line 1))
+  Using cached typing_inspection-0.4.5-py3-none-any.whl.metadata (2.6 kB)
+Using cached fastapi-0.115.12-py3-none-any.whl (95 kB)
+Using cached uvicorn-0.34.2-py3-none-any.whl (62 kB)
+Using cached PyMySQL-1.1.1-py3-none-any.whl (44 kB)
+Using cached httpx-0.28.1-py3-none-any.whl (73 kB)
+Using cached httpcore-1.0.9-py3-none-any.whl (78 kB)
+Using cached pydantic-2.14.3-py3-none-any.whl (494 kB)
+Using cached pydantic_core-2.50.4-cp315-cp315-macosx_11_0_arm64.whl (2.1 MB)
+Using cached starlette-0.46.2-py3-none-any.whl (72 kB)
+Using cached anyio-4.16.0-py3-none-any.whl (134 kB)
+Using cached annotated_types-0.8.0-py3-none-any.whl (13 kB)
+Using cached click-8.5.1-py3-none-any.whl (126 kB)
+Using cached h11-0.16.0-py3-none-any.whl (37 kB)
+Using cached idna-3.20-py3-none-any.whl (69 kB)
+Using cached typing_extensions-4.16.0-py3-none-any.whl (45 kB)
+Using cached typing_inspection-0.4.5-py3-none-any.whl (14 kB)
+Using cached certifi-2026.10.23-py3-none-any.whl (135 kB)
+Installing collected packages: typing-extensions, PyMySQL, idna, h11, click, certifi, annotated-types, uvicorn, typing-inspection, pydantic-core, httpcore, anyio, starlette, pydantic, httpx, fastapi
+
+Successfully installed PyMySQL-1.1.1 annotated-types-0.8.0 anyio-4.16.0 certifi-2026.10.23 click-8.5.1 fastapi-0.115.12 h11-0.16.0 httpcore-1.0.9 httpx-0.28.1 idna-3.20 pydantic-2.14.3 pydantic-core-2.50.4 starlette-0.46.2 typing-extensions-4.16.0 typing-inspection-0.4.5 uvicorn-0.34.2
+
+added 34 packages, and audited 35 packages in 1s
+
+6 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+npm warn install-scripts 2 packages have install scripts not yet covered by allowScripts:
+npm warn install-scripts   esbuild@0.25.12 (postinstall: node install.js)
+npm warn install-scripts   fsevents@2.3.3 (install: (install scripts present))
+npm warn install-scripts
+npm warn install-scripts Run `npm install-scripts ls` to review, or `npm install-scripts approve <pkg>` to allow.
+
+> certificate-admin@1.0.0 build
+> vite build
+
+vite v6.4.5 building for production...
+transforming...
+✓ 10 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                  0.36 kB │ gzip:  0.26 kB
+dist/assets/index-K-PhoErY.css   1.81 kB │ gzip:  0.81 kB
+dist/assets/index-DF0cCcRe.js   78.35 kB │ gzip: 30.50 kB
+✓ built in 255ms
+Schema and repeatable demo data ready.
+INFO:     Started server process [77370]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:18020 (Press CTRL+C to quit)
+INFO:     127.0.0.1:51164 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51166 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51168 - "POST /api/bulk-issue HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51170 - "GET /api/certificates/3 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51172 - "GET /api/certificates?search=Startup+Check+787c99189d16 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51196 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51196 - "GET /assets/index-DF0cCcRe.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51200 - "GET /assets/index-K-PhoErY.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51196 - "GET /api/actors HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51200 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:51196 - "GET /api/courses HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51196 - "GET /api/certificates?search=&sort=issue_date&direction=desc&page=1&page_size=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51196 - "POST /api/bulk-issue HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51196 - "GET /api/certificates?search=&sort=issue_date&direction=desc&page=1&page_size=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51196 - "GET / HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:51196 - "GET /api/actors HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51196 - "GET /api/courses HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51196 - "GET /api/certificates?search=&sort=issue_date&direction=desc&page=1&page_size=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51196 - "GET /api/certificates/3 HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [77370]

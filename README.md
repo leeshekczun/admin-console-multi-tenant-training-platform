@@ -1,114 +1,254 @@
 # Certificate Admin
 
-Internal multi-tenant training certificate console. Python + FastAPI, MySQL, Vue 3 + Vite.
-Development in progress: acceptance results and remaining work are not yet final.
+Internal multi-tenant training certificate console built with Python/FastAPI, MySQL and Vue 3/Vite.
+The user accepted the product and test milestone. This repository also records later, explicitly
+approved documentation/evidence work outside the original 45-minute task window; see `docs/timing.md`.
+No claim is made that the entire assessment submission, including independent written answers, is complete.
 
-## Quick start
+## Requirements and configuration
 
-Prerequisites: local MySQL running, Python 3.11+ (tested 3.15.2), Node (tested 26.13.0), npm 11.20.0.
-MySQL tested: 9.3.0. Fixed direct dependency versions: `requirements.txt`, `frontend/package.json`.
+Tested environment: macOS, Python 3.15.2, MySQL 9.3.0, Node 26.13.0, npm 11.20.0.
+Python code requires Python 3.11+. Direct dependencies are pinned in `requirements.txt`;
+Vue 3.5.45, Vite 6.4.5 and plugin-vue 5.2.3 are pinned in `frontend/package.json` with a committed npm lockfile.
+Python transitive dependencies are resolved during installation; the clean startup log records the installed versions.
 
-Create a database once if not already present (the development machine already has both):
+MySQL must already be running. Create the application and isolated verification databases once:
 
 ```sh
 mysql -e 'CREATE DATABASE IF NOT EXISTS certificate_admin CHARACTER SET utf8mb4; CREATE DATABASE IF NOT EXISTS certificate_admin_test CHARACTER SET utf8mb4;'
 ```
 
-Default connection: local socket `/tmp/mysql.sock`, current demo configuration uses user `root`
-and an empty password. Configure your own credentials through `.env` copied from `.env.example`.
-Never commit `.env`. For TCP use an empty `MYSQL_SOCKET` and set `MYSQL_HOST`/`MYSQL_PORT`.
+These two databases were created on the development machine. Demo/local configuration uses the
+`root` MySQL account with an empty password through `/tmp/mysql.sock`; it is not a production setup.
+Copy `.env.example` to `.env` if different configuration is needed. Never commit `.env`.
+The scripts source `.env` as shell configuration: quote values containing shell-special characters.
 
-One-command installation, repeatable schema/demo initialization, frontend build and complete app startup:
+| Variable | Default | Purpose |
+| --- | --- | --- |
+| MYSQL_SOCKET | /tmp/mysql.sock | Local MySQL socket; set empty to use TCP |
+| MYSQL_HOST | 127.0.0.1 | TCP host |
+| MYSQL_PORT | 3306 | TCP port |
+| MYSQL_USER | root | Database account |
+| MYSQL_PASSWORD | empty | Database password, supplied locally |
+| MYSQL_DATABASE | certificate_admin | Database for this process |
+| PORT | 8010 | Full application's HTTP port |
+| BASE_URL | http://127.0.0.1:8010 for startup check; 8011 for acceptance | URL of the matching running instance |
+
+## One-command startup and shutdown
+
+From the repository root, this one command installs declared dependencies, creates tables, initializes
+repeatable demo data, builds Vue, and starts the complete app:
 
 ```sh
 bash scripts/start.sh
 ```
 
-Open http://127.0.0.1:8010. Stop with Ctrl-C. Logs are on the server terminal.
-No login UI: choose a demo administrator. API header: `X-Actor: alice@east.test` or `bob@west.test`.
-The identities are a demo mechanism, not production authentication.
+Open **http://127.0.0.1:8010**. FastAPI serves both `/api` and the built frontend.
+Stop with **Ctrl-C** in the startup terminal. Logs are written to that terminal.
+If port 8010 is occupied, set `PORT` and use the corresponding URL.
 
-## First demonstration
+On the development machine npm's certificate chain was unavailable. The user authorized a temporary
+bypass for public dependency installation. The exact command used for clean-checkout verification was:
 
-1. Select Alice (East), choose Safety 101, click Issue certificates.
-2. Alex Lee and Morgan Park are issued; Jamie Chen is skipped as incomplete; Taylor Smith is already certified.
-3. Refresh/search the certificate list and view a certificate. Changes persist in MySQL.
-4. Select Bob (West) to see only West data, including a separate Safety 101 and Alex Lee.
-5. View the seeded Taylor certificate: East displays 2026-01-11 00:30, West displays 2026-01-10 21:30.
+```sh
+MYSQL_DATABASE=certificate_admin_clean_verify_20261108_1526 PORT=18020 npm_config_strict_ssl=false bash scripts/start.sh
+```
 
-Seed repeats do not remove, reset or duplicate existing certificates. It does not reissue revoked certificates.
-Reinitialize demo schema/data without starting the server: `.venv/bin/python -m backend.seed`.
+That separate database had first been created empty. No application data, `.venv`, `node_modules` or
+built frontend was copied into the clean clone. The environment override is local to the command;
+the repository does not persistently disable TLS verification. On machines with a valid CA chain,
+use the standard startup command above. Installation requires network access or a populated package cache.
 
-## Architecture and boundaries
+## Demo identities and data
 
-`backend/main.py`: actor context, scoped API queries, issue/revoke transactions and CSV.
-`backend/db.py`: schema and connection configuration. `backend/seed.py`: repeatable fixtures.
-`frontend/App.vue`: list, actor selection, issue outcomes, detail, revoke confirmation and CSV.
-Certificate changes and audit events commit atomically. MySQL unique constraints protect each enrollment
-and audit action. A tenant row lock serializes bulk operations across processes; repeated keys return
-the saved response and different payloads return 409. Locks are intentionally coarse for this small console.
-UTC timestamps and materialized tenant-local issue dates use IANA zoneinfo, including DST.
-Sort ties always use certificate ID ascending. CSV uses the current search/sort over all matching rows,
-not only the visible page; server-side cursors stream bounded batches on an independent connection.
+No login UI is required. Choose Alice/East or Bob/West in the administrator selector.
+Direct requests use `X-Actor: alice@east.test` or `X-Actor: bob@west.test`.
+These are demo identities, not production authentication.
 
-## Verification and completeness
+| Tenant | IANA timezone | Admin | Safety 101 course ID |
+| --- | --- | --- | --- |
+| East | Australia/Sydney | alice@east.test | 100 |
+| West | Australia/Perth | bob@west.test | 200 |
 
-### Automated unit and controlled transaction tests
+Each tenant has a separate Alex Lee (completed), Jamie Chen (incomplete), Taylor Smith
+(completed and already certified) and Morgan Park (completed). Both also have a First Aid course
+(IDs 101/201, initially no enrollments). On a fresh database, Safety 101 issuance issues Alex and
+Morgan, skips Jamie as incomplete, and skips Taylor as already certified.
 
-Database-free API unit tests (17 tests, including parameterized subcases):
+Seeded certificates `DEMO-EAST-001` and `DEMO-WEST-001` share UTC timestamp
+`2026-01-10T13:30:00Z`. Local displays are East `2026-01-11 00:30` and West `2026-01-10 21:30`.
+Issuance and revocation audit events are visible in certificate detail.
+
+Initialize schema and demo data without starting the app:
+
+```sh
+.venv/bin/python -m backend.seed
+```
+
+The seed uses repeat-safe insertion. It never resets statuses or removes records. After previous
+issuance, eligible learners are already certified and will be skipped; revoked certificates are
+also skipped and cannot be reissued. Use a newly created empty database for an untouched demo.
+Schema initialization is version-one `CREATE TABLE IF NOT EXISTS`; no later-version upgrade migration
+is claimed. No real user data is included.
+
+## Verification commands
+
+### Startup check
+
+With the matching application running:
+
+```sh
+bash scripts/check.sh
+```
+
+The check has a 45-second total deadline and per-request timeouts. It checks configuration, required
+tables, built frontend and API readiness, and verifies the API database matches its configured database.
+It creates a uniquely named `Startup Check ...` course/enrollment, issues through the API, reads list/detail,
+and checks exactly one issuance audit in MySQL. It retains isolated check records for inspection.
+Failures exit nonzero and identify the failed step. Use the same `.env`/database and matching `BASE_URL`
+as the server. Logs: `verification/startup-candidate.txt`, `verification/clean-checkout-check.txt`.
+
+### Unit and controlled transaction tests
+
+Database-free API units:
 
 ```sh
 .venv/bin/python -m unittest discover -s tests -p 'test_api_units.py' -v
 ```
 
-All tests, including five controlled real-MySQL transaction tests (22 tests total):
+All 22 tests, including five real-MySQL transaction tests:
 
 ```sh
 MYSQL_DATABASE=certificate_admin_test .venv/bin/python -m backend.seed
 MYSQL_DATABASE=certificate_admin_test .venv/bin/python -m unittest discover -s tests -v
 ```
 
-The first command only initializes the already-created isolated database; never point these tests
-at the application database. No running HTTP server is needed: tests use FastAPI TestClient.
-Unit tests mock database connections. Transaction tests wrap real connections/cursors to inject
-precise audit failures or pause immediately before commit; MySQL itself performs locks, savepoints
-and rollback. They create uniquely named fixtures and retain them for inspection, without deleting
-other data. Without the explicit test database setting, the five integration tests are skipped.
+No running server is needed; these use TestClient. The five integration tests skip unless the explicit
+test database is selected. They create unique retained fixtures and never delete existing data.
+Fault hooks wrap real cursors/connections, proving savepoint/full rollback and pre-commit lock behavior
+on MySQL. The expected injected audit exception is logged before the corresponding test reports `ok`.
+See `docs/test-coverage.md`, `verification/all-tests.txt`, and `verification/clean-checkout-tests.txt`.
+Vue behavior has browser verification; no Vue component unit-test suite is claimed.
 
-Actual result: 22 tests passed, zero skipped, 0.261 seconds, local MySQL 9.3.0.
-Evidence: `verification/unit-tests.txt`, `verification/all-tests.txt`, `docs/test-coverage.md`.
-The audit integrity traceback in the test output is the deliberately injected fault, followed by `ok`.
-These are API unit and transaction integration tests; existing Vue behavior is covered by the
-separately recorded browser scenarios, not by a Vue component unit suite.
+### A1-A7 automated reproduction
 
-Run the bounded startup check against the running application:
+Start a separate instance against the isolated database in one terminal:
 
 ```sh
-bash scripts/check.sh
+MYSQL_DATABASE=certificate_admin_test PORT=8011 bash scripts/start.sh
 ```
 
-This checks configuration, required tables, built frontend and API readiness, then issues and reads
-one isolated `Startup Check ...` record and verifies its database audit. It retains that clearly named
-record for inspection. Total timeout is 45 seconds; a failure exits nonzero and names the step.
-First run passed in 0.073 seconds. Browser issuance, reload and detail passed; evidence is in `verification/`.
+In another terminal, from the same checkout:
 
-A1-A7 passed on the local isolated test instance; results are in `verification/acceptance.json`
-and `verification/acceptance-run.txt`. The 100,000-row generator is `scripts/generate_100k.py`;
-it is deliberately excluded from quick-start initialization. Additional browser scenarios are recorded
-in `verification/browser-scenarios.txt`. The current candidate startup check is in
-`verification/startup-candidate.txt`.
+```sh
+BASE_URL=http://127.0.0.1:8011 bash scripts/verify.sh
+```
 
-Vue and Vite were updated to 3.5.45 and 6.4.5 using the npm audit recommended fixes;
-installation reported zero vulnerabilities afterward. `verification/npm-audit.json` is the historical
-audit of the previous dependency versions, retained as evidence of the correction.
+The command requires the running server to use `certificate_admin_test`. Do not run other mutating
+test suites simultaneously against that database: the acceptance suite checks before/after counts.
+It creates fresh course/learner fixtures, uses real HTTP requests and SQL state verification, and generates
+its own explicit growth dataset. The script has a 180-second total deadline; individual exports must
+finish within 60 seconds. Results are saved to `verification/acceptance.json` and printed to the terminal.
 
-Remaining delivery work: full A1-A7 reproduction instructions, clean-checkout one-command startup
-verification, final AI export/index and decision-log reconciliation, and `COMPLETENESS.md`.
-The current native AI export is a point-in-time snapshot, not a claim of final completeness.
-User-reported A3 correction: an already-used key with a different `course_id` now returns 409
-even when the replacement course does not exist. Existing-key fingerprint comparison precedes
-course lookup. Regression evidence is in `verification/key-misuse-before.txt` and
-`verification/key-misuse-after.txt`; the original result and database counts remain unchanged.
-Section 6 answers must be supplied independently by the candidate; `written-answers.md` is not supplied.
-Original assignment: `docs/assessment.pdf`. Native AI evidence: `ai/sessions/`, indexes in `ai/` and `docs/`.
-No cloud deployment, production authentication, notifications or unrelated features are included.
+| Scenario | Reproduction performed by scripts/acceptance.py | Required result |
+| --- | --- | --- |
+| A1 tenant isolation | Bob directly requests an East certificate ID, revokes it, issues East course 100, and searches/exports East serials; compare database counts | Detail/revoke/bulk 404; list/export reveal no East rows; no new certificate, audit or operation |
+| A2 retry safety | Eight simultaneous requests for one fresh course with one key, followed by two sequential retries; compare all responses and SQL | Same operation/result; one certificate per eligible enrollment; exactly one issuance audit each |
+| A3 key misuse | Reuse that key for First Aid 101 and nonexistent course 999999; replay original request | Both changed courses return 409; database counts and original result unchanged |
+| A4 learner outcomes | Fresh completed, incomplete and already-certified fixtures in one course | Two issued; incomplete and duplicate skipped with reasons |
+| A5 DST/local date | Fetch list/detail and filtered CSV for each seeded DEMO certificate | East 2026-01-11 00:30, West 2026-01-10 21:30; local calendar dates in CSV |
+| A6 growth/export | Generate 100,000 East rows with equal learner sort values, search Growth Learner, sort learner descending, export twice; request list while first export is open; compare CSV to ordered SQL | Exactly 100,000 matching East rows; both exports under 60s; byte-identical repeated order with ID tie-break; list succeeds during export |
+| A7 revocation | Four simultaneous revokes of one active certificate, then repeat; inspect SQL and attempt issuance again with a new key | Exactly one status change and revocation audit; all later revokes unchanged; revoked enrollment skipped |
+
+Focused A3 regression, without a running server:
+
+```sh
+MYSQL_DATABASE=certificate_admin_test .venv/bin/python scripts/check_key_misuse.py
+```
+
+This includes the user-reported missing replacement course and checks unused keys still return 404
+for missing/foreign courses. Original reproduction/fix evidence: `verification/key-misuse-*.txt`.
+
+### Generate 100,000 rows explicitly
+
+Never part of default quick-start data initialization:
+
+```sh
+MYSQL_DATABASE=certificate_admin_test .venv/bin/python scripts/generate_100k.py
+```
+
+Run the seed first if that database is empty. The generator adds 100,000 East certificates and their
+issuance audits in a dedicated `Export Growth Dataset` course, using `GROWTH-EAST-000000` through
+`GROWTH-EAST-099999`. Each group of ten learners shares a name to exercise stable sorting.
+Repeating it does not add duplicates. West and existing default demo records are unchanged.
+To inspect this dataset in the UI, run a server with the same test database and select Alice.
+
+## Actual results and evidence
+
+The implementation verified from a clean local clone was `0e656c0a6515a3702fbbcaf01ce650518515f352`.
+Subsequent supplemental changes affect documentation/evidence export tooling only.
+
+| Check | Actual result | Evidence |
+| --- | --- | --- |
+| Original core API/database flow | Passed, every actual issuance has one audit | verification/first-chain.md |
+| Browser issue/reload/detail | Passed | verification/browser-main.txt |
+| Browser tenant switch, actual West issuance, revoke confirmation, loading/empty/error retry, CSV download | Passed | verification/browser-scenarios.txt |
+| API units + controlled MySQL transactions | 22 passed, no skips | verification/all-tests.txt; verification/clean-checkout-tests.txt |
+| Clean-clone install, empty-database initialization and startup | Passed | verification/clean-checkout-startup.txt; verification/clean-checkout.md |
+| Clean-clone startup write/read check | Passed, 0.080s | verification/clean-checkout-check.txt |
+| Clean-clone browser actual issuance/readback | Passed | verification/clean-checkout-browser.txt and .png |
+| A1-A7 final sequential regression | All passed; 100k exports 1.194s/0.768s, concurrent list 0.558s | verification/final-acceptance.json; verification/final-acceptance-run.txt |
+| A3 missing-course regression | Passed, 409; no writes or overwritten result | verification/key-misuse-after.txt; verification/key-misuse-http.txt |
+
+An initial supplemental acceptance run was incorrectly scheduled alongside another mutating test suite;
+its global count assertion failed due to the other suite's writes. The failure is retained as
+`verification/final-acceptance-concurrent-interference.*`; the final acceptance run is sequential.
+The earlier `verification/npm-audit.json` is a historical audit of old versions, not the final dependency
+set. The recorded update to Vue/Vite reported zero vulnerabilities; production builds passed afterward.
+
+## Architecture and limitations
+
+`backend/main.py`: scoped API, issue/revoke transactions and streaming CSV. `backend/db.py`: schema and
+connection setup. `backend/seed.py`: fixtures. `frontend/App.vue`: all product screens and state handling.
+Issue payload: `{"course_id":100}` with `Idempotency-Key`; extra fields are rejected. Supported list/CSV
+sorts: `learner_name`, `course_title`, `serial_number`, `issue_date`, `status`; directions `asc`/`desc`.
+Search matches learner names or serial numbers literally. List uses page/page_size (1..100 rows/page).
+CSV exports all matching records, not just the displayed page. All sort ties use certificate ID ascending.
+
+Certificate/audit writes commit atomically. Uniqueness protects enrollments and audit actions.
+A coarse tenant-row lock serializes bulk operations across processes; same-key callers wait for the
+committed result. An existing key's fingerprint is checked before looking up a replacement course.
+Revocation locks the certificate row. UTC timestamps plus materialized tenant-local issue dates use IANA DST.
+CSV uses a server-side cursor in bounded batches on an independent connection; no in-memory 100k store.
+
+Performance results are for the documented local machine, not a guarantee for arbitrary hosts.
+There is no schema evolution system, production authentication, cloud deployment, notifications or
+unrelated functionality. The requirement excludes those features. The browser's missing favicon produces
+an incidental 404; it does not affect application flows and no favicon feature is added.
+
+## Submission completeness
+
+See `COMPLETENESS.md`, `ai/session-index.csv`, `ai/decision-log.md`, and `docs/ai-export-index.md`.
+Original assignment and instructions are in `docs/`; native session logs preserve original language.
+All discovered project-bound native sessions are indexed, including independent review.
+
+`written-answers.md` exists on the existing remote main branch and is preserved unchanged when preparing
+this branch for a PR. Its content is not read, drafted, edited or reviewed by this agent. Section 6
+completion and compliance remain the candidate's responsibility; this agent does not certify them.
+The complete assessment submission therefore remains pending the candidate's independent work and
+final packaging/submission decision. No submission email has been sent.
+
+### Outstanding items at supplemental handoff
+
+| Item | Actual status / limitation |
+| --- | --- |
+| Independent written answers | `written-answers.md` exists on remote main and is preserved unchanged. This agent has not read or reviewed it and does not certify Section 6 completion. |
+| Original time-limit compliance | Supplemental verification/documentation was explicitly approved after the original 45-minute hard stop. A complete on-time assessment submission is not claimed. |
+| Pull request and merge | Requested by the user but not yet completed at this documentation cutoff. The remote has no `master`; the user approved `main` as the target. SSH push works, but no GitHub CLI/token is configured and browser control timed out. PR creation needs authenticated GitHub API or browser access. The user will perform the merge; this agent will not merge. No PR or merge success is claimed. |
+| Final submission email | Not sent; no email-sending instruction has been given. |
+| Native log after export cutoff | Final packaging, push/PR/merge attempts and final handoff after the declared cutoff cannot be inside that same snapshot. The index states its exact cutoff; git/PR records identify later packaging. |
+| Other AI tools unknown to this agent | All three discovered local project Codex sessions are included. Any additional off-machine/tool interactions require candidate disclosure and their original export. |
+
+The README reproduction instructions, explicit 100,000-row command, completeness declaration,
+multi-session evidence and clean-checkout verification have been supplied in this supplemental work.
+Those are no longer listed as missing. Details and artifact paths are in `COMPLETENESS.md`.

@@ -11,3 +11,21 @@ All displayed times are Asia/Shanghai, 2026-11-08.
 
 The sitting deadline is separate and does not extend the task commit window.
 Section 6 must be completed by the candidate independently; no AI-written answers are supplied.
+
+## Explicitly authorized supplemental delivery
+
+- Original window ended at 15:18:50. No new task commit was created between the previous
+  milestone at 15:14:28 and the user's later authorization to continue outside that window.
+- At 15:20:45 the agent measured that the hard stop had passed, reported the remaining
+  README/completeness/export/clean-checkout gaps, and stopped before making changes.
+- The user subsequently explicitly instructed: "Complete and push". The first measured
+  supplemental-work clock was 15:26:13. This is a separately authorized continuation,
+  not an extension hidden inside the original assessment result.
+- Supplemental work: clean clone of 0e656c0, installation and new empty-database startup,
+  browser and startup checks, sequential A1-A7 regression, README/COMPLETENESS, native exports
+  for three discovered project sessions and reconciled decision/commit links.
+- Product code did not change during this supplemental work. Evidence-export tooling changed
+  to support multiple project sessions and validate their project directory.
+- The one-hour sitting target from 14:31:57 ends at 15:31:57. Any later packaging is outside
+  that original target as well and must not be represented as an on-time original submission.
+- The supplemental final commit timestamp and SHA are provided in the handoff and git history.
