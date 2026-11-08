@@ -64,7 +64,19 @@ one isolated `Startup Check ...` record and verifies its database audit. It reta
 record for inspection. Total timeout is 45 seconds; a failure exits nonzero and names the step.
 First run passed in 0.073 seconds. Browser issuance, reload and detail passed; evidence is in `verification/`.
 
-A1-A7 evidence, 100,000-row generator and final declaration are pending implementation/verification.
-Do not treat pending items as passed. Section 6 answers must be supplied independently by the candidate.
+A1-A7 passed on the local isolated test instance; results are in `verification/acceptance.json`
+and `verification/acceptance-run.txt`. The 100,000-row generator is `scripts/generate_100k.py`;
+it is deliberately excluded from quick-start initialization. Additional browser scenarios are recorded
+in `verification/browser-scenarios.txt`. The current candidate startup check is in
+`verification/startup-candidate.txt`.
+
+Vue and Vite were updated to 3.5.45 and 6.4.5 using the npm audit recommended fixes;
+installation reported zero vulnerabilities afterward. `verification/npm-audit.json` is the historical
+audit of the previous dependency versions, retained as evidence of the correction.
+
+Remaining delivery work: full A1-A7 reproduction instructions, clean-checkout one-command startup
+verification, final AI export/index and decision-log reconciliation, and `COMPLETENESS.md`.
+The current native AI export is a point-in-time snapshot, not a claim of final completeness.
+Section 6 answers must be supplied independently by the candidate; `written-answers.md` is not supplied.
 Original assignment: `docs/assessment.pdf`. Native AI evidence: `ai/sessions/`, indexes in `ai/` and `docs/`.
 No cloud deployment, production authentication, notifications or unrelated features are included.

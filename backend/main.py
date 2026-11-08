@@ -34,8 +34,9 @@ def actor(x_actor: str = Header(default='')):
 def health():
     with connect() as db:
         with db.cursor() as c:
-            c.execute('SELECT COUNT(*) n FROM tenants')
-            return {'status': 'ready', 'tenants': c.fetchone()['n']}
+            c.execute('SELECT COUNT(*) n, DATABASE() db FROM tenants')
+            row=c.fetchone()
+            return {'status': 'ready', 'tenants': row['n'], 'database':row['db']}
 
 
 @app.get('/api/actors')

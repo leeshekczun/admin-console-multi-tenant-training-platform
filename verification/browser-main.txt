@@ -1,4 +1,4 @@
-2026-11-08T06:41:57.789Z
+2026-11-08T07:03:19.825Z
 PASS: browser issue, reload, detail; no page errors.
 TRAINING PLATFORM
 
@@ -13,6 +13,7 @@ Issue certificates to completed learners. Incomplete and previously certified le
 Course
 Safety 101
 First Aid
+Startup Check c497ba9c46ad
 Issue certificates
 Certificates
 Export CSV
@@ -30,9 +31,10 @@ Search / refresh
 Learner	Course	Serial number	Issue date (tenant local)	Status	Details
 Alex Lee	Safety 101	CERT-CBBAEBAF57634D1490C56877289D1A6E	2026-11-08	ACTIVE	View
 Morgan Park	Safety 101	CERT-7570DC704D524C92A3A96DD891E6B693	2026-11-08	ACTIVE	View
+Startup Check c497ba9c46ad	Startup Check c497ba9c46ad	CERT-D7DCD206125A42609C1E322E047C77D1	2026-11-08	ACTIVE	View
 Taylor Smith	Safety 101	DEMO-EAST-001	2026-01-11	ACTIVE	View
 Previous
-Page 1 of 1 · 3 certificates
+Page 1 of 1 · 4 certificates
 Next
 Certificate detail
 Serial number

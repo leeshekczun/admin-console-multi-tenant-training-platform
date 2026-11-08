@@ -31,6 +31,7 @@ def run():
             response=client.get('/'); response.raise_for_status()
             assert '<div id="app">' in response.text,'Built frontend missing'
             health=client.get('/api/health'); health.raise_for_status()
+            assert health.json()['database']==os.getenv('MYSQL_DATABASE','certificate_admin'),'API and checker database mismatch'
             STEP='isolated check fixture'
             fixture=int(time.time_ns()//1000)
             name='Startup Check '+uuid4().hex[:12]

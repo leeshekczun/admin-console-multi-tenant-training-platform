@@ -8,7 +8,7 @@ const loading = ref(false), error = ref(''), issuing = ref(false), exporting = r
 const operation = ref(null), issueError = ref(''), exportError = ref(''), selected = ref(null)
 const detailLoading = ref(false), detailError = ref(''), revoking = ref(false), confirmation = ref(false)
 const pendingKey = ref(null), pendingCourse = ref(null)
-let listVersion = 0
+let listVersion = 0, actorVersion = 0
 const pages = computed(() => Math.max(1, Math.ceil(total.value / pageSize)))
 
 async function api(path, options = {}) {
@@ -38,15 +38,18 @@ async function load() {
 }
 
 async function switchActor() {
+  const version = ++actorVersion
   ++listVersion
   selected.value = null; confirmation.value = false; operation.value = null; issueError.value = ''
   exportError.value = ''; detailError.value = ''; pendingKey.value = null; pendingCourse.value = null
   courses.value = []; course.value = ''; items.value = []; page.value = 1
   try {
-    courses.value = await (await api('/courses')).json()
+    const loadedCourses = await (await api('/courses')).json()
+    if (version !== actorVersion) return
+    courses.value = loadedCourses
     course.value = courses.value[0]?.id ?? ''
     await load()
-  } catch (e) { error.value = e.message }
+  } catch (e) { if (version === actorVersion) error.value = e.message }
 }
 
 function applyFilters() { page.value = 1; load() }
